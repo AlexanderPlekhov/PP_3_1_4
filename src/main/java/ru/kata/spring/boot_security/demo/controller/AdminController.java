@@ -37,7 +37,7 @@ public class AdminController {
 
     @PostMapping("/createUser")
     public String create(@ModelAttribute("newUser") @Valid User user,
-                         @ModelAttribute("userRoles") Long[] identity,
+                         @ModelAttribute("userRoles") @RequestParam(defaultValue = "2") Long[] identity,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin";
@@ -55,7 +55,7 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("newUser") @Valid User user,
-                         @ModelAttribute("userRoles") Long[] identity,
+                         @ModelAttribute("userRoles") @RequestParam(defaultValue = "2") Long[] identity,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin";
