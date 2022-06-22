@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,7 +54,7 @@ public class AdminController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("newUser") @Valid User user,
-                         @ModelAttribute("userRoles") @RequestParam(defaultValue = "2") Long[] identity,
+                         @ModelAttribute("userRoles") Long[] identity,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin";

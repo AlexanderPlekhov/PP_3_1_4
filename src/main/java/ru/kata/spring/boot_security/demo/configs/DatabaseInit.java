@@ -20,6 +20,7 @@ public class DatabaseInit {
         this.userService = userService;
     }
 
+
     @PostConstruct
     public void init() {
         Role roleAdmin = new Role("ADMIN");
