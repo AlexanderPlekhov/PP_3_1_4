@@ -1,16 +1,17 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,28 +26,21 @@ public class AdminController {
 
 
     @GetMapping()
-    public String adminPage() {
+    public String adminPage(Principal principal, Model model) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("newUser", new User());
         return "admin";
     }
 
-    @GetMapping("/users")
-    public String allUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "adminView/users";
-    }
-
-    @GetMapping("/users/new")
-    public String addUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", roleService.findAll());
-        return "adminView/newUser";
-    }
-
-    @PostMapping("/users")
-    public String create(@ModelAttribute("user") @Valid User user,
+    @PostMapping("/createUser")
+    public String create(@ModelAttribute("newUser") @Valid User user,
                          @ModelAttribute("userRoles") Long[] identity,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "adminView/newUser";
+            return "admin";
         }
         if(identity != null) {
             for (Long roleId : identity) {
@@ -56,23 +50,15 @@ public class AdminController {
             user.addRoleInSet(roleService.findRoleById(2L));
         }
         userService.save(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
-    @GetMapping("users/edit/{id}")
-    public String edit(@ModelAttribute("user") User user,
-                       Model model, @PathVariable("id") long id) {
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("user", userService.findById(id));
-        return "adminView/editUser";
-    }
-
-    @PatchMapping("users/edit/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("newUser") @Valid User user,
                          @ModelAttribute("userRoles") Long[] identity,
-                         BindingResult bindingResult, @PathVariable("id") long id) {
+                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "adminView/editUser";
+            return "admin";
         }
         if(identity != null) {
             for (Long roleId : identity) {
@@ -82,13 +68,13 @@ public class AdminController {
             user.addRoleInSet(roleService.findRoleById(2L));
         }
         userService.save(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("users/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") long id) {
         userService.deleteById(id);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 }
 

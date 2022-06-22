@@ -22,8 +22,8 @@ public class DatabaseInit {
 
     @PostConstruct
     public void init() {
-        Role roleAdmin = new Role("ROLE_ADMIN");
-        Role roleUser = new Role("ROLE_USER");
+        Role roleAdmin = new Role("ADMIN");
+        Role roleUser = new Role("USER");
         roleService.save(roleAdmin);
         roleService.save(roleUser);
 
