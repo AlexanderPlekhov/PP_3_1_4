@@ -6,13 +6,13 @@ $(async function () {
     getDefaultModal()
 })
 
-// ¬—≈ –ŒÀ»
+// all roles
 const roleJson = []
 fetch('api/roles')
     .then(res => res.json())
     .then(roles => roles.forEach(role => roleJson.push(role)))
 
-// FETCH
+// fetch
 const userFetchService = {
     head: {
         'Accept': 'application/json',
@@ -39,7 +39,7 @@ const userFetchService = {
     })
 }
 
-// ¿ƒÃ»Õ-ﬁ«≈–
+// admin-user
 async function tableWithUserID() {
     let table = $('#tableWithUserID')
     table.empty()
@@ -61,7 +61,7 @@ async function tableWithUserID() {
         })
 }
 
-// ¬—≈ ﬁ«≈–€
+// all users
 async function allUsersTable() {
     let table = $('#tableAllUsers tbody')
     table.empty()
@@ -104,7 +104,7 @@ async function allUsersTable() {
     })
 }
 
-// —Œ«ƒ¿Õ»≈ ÕŒ¬Œ√Œ ﬁ«≈–¿
+// create new user
 async function createUser() {
     $('#addNewUserButton').on('click', async (e) => {
         let addUserForm = $('#addUserForm')
@@ -139,7 +139,7 @@ async function createUser() {
     })
 }
 
-// ﬁ«≈–-‘Œ–Ã¿
+// user-form
 async function addNewUserForm() {
     let form = $(`#addUserForm`)
 
@@ -154,7 +154,7 @@ async function addNewUserForm() {
     })
 }
 
-// ”ƒ¿À≈Õ»≈ ﬁ«≈–¿
+// delete user
 async function deleteUser(modal, id) {
     let thisUser = await userFetchService.findUserById(id)
     let user = thisUser.json()
@@ -215,7 +215,7 @@ async function deleteUser(modal, id) {
     })
 }
 
-// »«Ã≈Õ≈Õ»≈ ﬁ«≈–¿
+// edit user
 async function editUser(modal, id) {
     let thisUser = await userFetchService.findUserById(id)
     let user = thisUser.json()
