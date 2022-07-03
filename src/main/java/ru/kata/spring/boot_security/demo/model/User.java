@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,8 +12,8 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
@@ -42,6 +43,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     @NotEmpty(message = "Поле \"Password\" обязательно для заполнения")
     private String password;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinTable(name = "users_roles",

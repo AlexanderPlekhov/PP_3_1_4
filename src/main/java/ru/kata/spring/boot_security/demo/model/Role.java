@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private Collection<User> users = new HashSet<>();
 
@@ -30,4 +32,5 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return getName();
     }
+
 }

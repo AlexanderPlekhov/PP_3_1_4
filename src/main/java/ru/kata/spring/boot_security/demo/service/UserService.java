@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findUserById(id);
     }
 
     @Transactional(readOnly = true)
@@ -55,6 +55,6 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found in Data Base", username));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return user;
     }
 }
